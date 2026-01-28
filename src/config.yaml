@@ -1,0 +1,103 @@
+# Configuration pour la génération de données Finance Performance Management
+
+# Période de simulation
+start_date: "2025-01-01"
+end_date: "2025-12-31"
+fiscal_year: 2025
+
+# Finance
+chart_of_accounts:
+  count: 150  # Nombre de comptes comptables
+
+general_ledger:
+  entries_per_month: 2000  # Environ 24 000 écritures par an
+  variance_pct: 0.15  # 15% de variance vs budget
+
+cost_centers:
+  count: 20  # Centres de coûts (Sales, Marketing, R&D, Ops, etc.)
+
+budgets:
+  monthly: true
+  variance_tolerance: 0.10  # Tolérance d'écart acceptable
+
+forecasts:
+  quarterly_reforecast: true
+  accuracy_improvement: 0.05  # Le forecast s'améliore de 5% par trimestre
+
+allocations:
+  overhead_pools: 5  # Pools de coûts indirects (IT, HR, Admin, Facilities, Legal)
+  allocation_methods: ["headcount", "revenue", "square_footage", "transactions"]
+
+# Business
+customers:
+  count: 500
+  segments:
+    - name: "enterprise"
+      pct: 0.10
+      avg_revenue: 500000
+      payment_terms_days: 60
+    - name: "mid_market"
+      pct: 0.30
+      avg_revenue: 150000
+      payment_terms_days: 45
+    - name: "smb"
+      pct: 0.60
+      avg_revenue: 30000
+      payment_terms_days: 30
+
+products:
+  count: 50
+  categories:
+    - name: "software_licenses"
+      count: 15
+      cogs_pct: 0.15  # Marge brute 85%
+      price_range: [5000, 50000]
+    - name: "professional_services"
+      count: 10
+      cogs_pct: 0.60  # Marge brute 40%
+      price_range: [10000, 100000]
+    - name: "maintenance"
+      count: 15
+      cogs_pct: 0.30  # Marge brute 70%
+      price_range: [1000, 10000]
+    - name: "training"
+      count: 10
+      cogs_pct: 0.50  # Marge brute 50%
+      price_range: [2000, 20000]
+
+invoices:
+  count: 8000  # ~650 factures/mois
+  avg_lines_per_invoice: 2.5
+
+payments:
+  on_time_pct: 0.60  # 60% paient à temps
+  late_7_days_pct: 0.20  # 20% paient avec 7 jours de retard
+  late_30_days_pct: 0.15  # 15% paient avec 30 jours de retard
+  late_60_plus_pct: 0.05  # 5% paient avec 60+ jours de retard
+
+# Scénarios d'analyse
+scenarios:
+  q2_margin_drop:
+    enabled: true
+    trigger_month: 4  # Avril (Q2)
+    cause: "price_discount"  # Guerre des prix
+    impact_pct: -0.12  # -12% de marge brute
+    
+  q3_cost_overrun:
+    enabled: true
+    trigger_month: 7  # Juillet (Q3)
+    cause: "marketing_overspend"
+    budget_overrun_pct: 0.25  # +25% vs budget
+    
+  q4_dso_spike:
+    enabled: true
+    trigger_month: 11  # Novembre (Q4)
+    cause: "enterprise_payment_delays"
+    dso_increase_days: 15  # DSO passe de 45 à 60 jours
+
+# Format de sortie
+output:
+  encoding: "utf-8"
+  decimal_separator: "."
+  date_format: "%Y-%m-%d"
+  currency: "EUR"
