@@ -208,6 +208,8 @@ scenarios:
 
 | Document | Description |
 |----------|-------------|
+| [`docs/dax_measures.md`](docs/dax_measures.md) | **NOUVEAU** - 40+ mesures DAX validées et testées |
+| [`src/validate_schema.py`](src/validate_schema.py) | **NOUVEAU** - Script de validation des schémas et colonnes |
 | [`schema.md`](docs/schema.md) | Schéma détaillé des 11 tables |
 | [`demo_story.md`](docs/demo_story.md) | Scénario narratif CFO |
 | [`fabric_setup.md`](docs/fabric_setup.md) | Guide de déploiement Fabric |
@@ -317,3 +319,4 @@ Données fictives - Utilisation libre pour démos et formations.
 **Happy analyzing! 💼📊**
 
 *Ce repo démontre la puissance de Microsoft Fabric pour les équipes Finance.*
+
