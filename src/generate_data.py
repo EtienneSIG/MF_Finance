@@ -648,19 +648,19 @@ def main():
     print()
     
     # Sauvegarder Finance
-    save_to_csv(chart_of_accounts, 'chart_of_accounts.csv', FINANCE_DIR)
-    save_to_csv(cost_centers, 'cost_centers.csv', FINANCE_DIR)
-    save_to_csv(budgets, 'budgets.csv', FINANCE_DIR)
-    save_to_csv(forecasts, 'forecasts.csv', FINANCE_DIR)
-    save_to_csv(allocations, 'allocations.csv', FINANCE_DIR)
-    save_to_csv(general_ledger, 'general_ledger.csv', FINANCE_DIR)
+    save_to_csv(chart_of_accounts, 'dim_chart_of_accounts.csv', FINANCE_DIR)
+    save_to_csv(cost_centers, 'dim_cost_centers.csv', FINANCE_DIR)
+    save_to_csv(budgets, 'fact_budgets.csv', FINANCE_DIR)
+    save_to_csv(forecasts, 'fact_forecasts.csv', FINANCE_DIR)
+    save_to_csv(allocations, 'fact_allocations.csv', FINANCE_DIR)
+    save_to_csv(general_ledger, 'fact_general_ledger.csv', FINANCE_DIR)
     
     # Sauvegarder Business
-    save_to_csv(customers, 'customers.csv', BUSINESS_DIR)
-    save_to_csv(products, 'products.csv', BUSINESS_DIR)
-    save_to_csv(invoices, 'invoices.csv', BUSINESS_DIR)
-    save_to_csv(invoice_lines, 'invoice_lines.csv', BUSINESS_DIR)
-    save_to_csv(payments, 'payments.csv', BUSINESS_DIR)
+    save_to_csv(customers, 'dim_customers.csv', BUSINESS_DIR)
+    save_to_csv(products, 'dim_products.csv', BUSINESS_DIR)
+    save_to_csv(invoices, 'fact_invoices.csv', BUSINESS_DIR)
+    save_to_csv(invoice_lines, 'fact_invoice_lines.csv', BUSINESS_DIR)
+    save_to_csv(payments, 'fact_payments.csv', BUSINESS_DIR)
     
     print()
     print("=" * 80)
