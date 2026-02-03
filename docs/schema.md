@@ -395,3 +395,5 @@ ORDER BY avg_days_overdue DESC;
 ---
 
 *Ce schéma permet de répondre à toutes les questions CFO/Finance via le Data Agent.*
+
+

@@ -18,10 +18,10 @@ Ce fichier contient toutes les mesures DAX testées et validées pour le semanti
 ```
 accounts[account_id] 1 ----→ * actuals[account_id]
 accounts[account_id] 1 ----→ * budget[account_id]
-cost_centers[cost_center_id] 1 ----→ * actuals[cost_center_id]
-cost_centers[cost_center_id] 1 ----→ * budget[cost_center_id]
-customers[customer_id] 1 ----→ * invoices[customer_id]
-invoices[invoice_id] 1 ----→ * payments[invoice_id]
+dim_cost_centers[cost_center_id] 1 ----→ * actuals[cost_center_id]
+dim_cost_centers[cost_center_id] 1 ----→ * budget[cost_center_id]
+dim_customers[customer_id] 1 ----→ * fact_invoices[customer_id]
+fact_invoices[invoice_id] 1 ----→ * fact_payments[invoice_id]
 ```
 
 ---
@@ -332,7 +332,7 @@ Total factures émises.
 
 ```dax
 Total Invoices = 
-SUM(invoices[amount])
+SUM(fact_invoices[amount])
 ```
 
 **Format:** Currency (EUR)
@@ -347,8 +347,8 @@ Factures payées.
 ```dax
 Paid Invoices = 
 CALCULATE(
-    SUM(invoices[amount]),
-    NOT(ISBLANK(invoices[paid_date]))
+    SUM(fact_invoices[amount]),
+    NOT(ISBLANK(fact_invoices[paid_date]))
 )
 ```
 
@@ -364,8 +364,8 @@ Factures non payées.
 ```dax
 Unpaid Invoices = 
 CALCULATE(
-    SUM(invoices[amount]),
-    ISBLANK(invoices[paid_date])
+    SUM(fact_invoices[amount]),
+    ISBLANK(fact_invoices[paid_date])
 )
 ```
 
@@ -413,9 +413,9 @@ Factures en retard (> due_date).
 ```dax
 Overdue Invoices = 
 CALCULATE(
-    SUM(invoices[amount]),
-    ISBLANK(invoices[paid_date]),
-    invoices[due_date] < TODAY()
+    SUM(fact_invoices[amount]),
+    ISBLANK(fact_invoices[paid_date]),
+    fact_invoices[due_date] < TODAY()
 )
 ```
 
@@ -432,8 +432,8 @@ Nombre de factures en retard.
 Overdue Invoices Count = 
 CALCULATE(
     COUNTROWS(invoices),
-    ISBLANK(invoices[paid_date]),
-    invoices[due_date] < TODAY()
+    ISBLANK(fact_invoices[paid_date]),
+    fact_invoices[due_date] < TODAY()
 )
 ```
 
@@ -470,9 +470,9 @@ Avg Days to Pay =
 AVERAGEX(
     FILTER(
         invoices,
-        NOT(ISBLANK(invoices[paid_date]))
+        NOT(ISBLANK(fact_invoices[paid_date]))
     ),
-    DATEDIFF(invoices[invoice_date], invoices[paid_date], DAY)
+    DATEDIFF(fact_invoices[invoice_date], fact_invoices[paid_date], DAY)
 )
 ```
 
@@ -487,7 +487,7 @@ Total paiements reçus.
 
 ```dax
 Total Payments = 
-SUM(payments[amount])
+SUM(fact_payments[amount])
 ```
 
 **Format:** Currency (EUR)
@@ -519,7 +519,7 @@ Revenue par centre de coûts.
 Revenue by Cost Center = 
 CALCULATE(
     [Revenue],
-    ALLEXCEPT(cost_centers, cost_centers[cost_center_id])
+    ALLEXCEPT(cost_centers, dim_cost_centers[cost_center_id])
 )
 ```
 
@@ -537,7 +537,7 @@ COGS par centre de coûts.
 COGS by Cost Center = 
 CALCULATE(
     [COGS],
-    ALLEXCEPT(cost_centers, cost_centers[cost_center_id])
+    ALLEXCEPT(cost_centers, dim_cost_centers[cost_center_id])
 )
 ```
 
@@ -556,12 +556,12 @@ Margin by Customer =
 VAR CustomerRevenue = 
     CALCULATE(
         [Revenue],
-        ALLEXCEPT(customers, customers[customer_id])
+        ALLEXCEPT(customers, dim_customers[customer_id])
     )
 VAR CustomerCOGS = 
     CALCULATE(
         [COGS],
-        ALLEXCEPT(customers, customers[customer_id])
+        ALLEXCEPT(customers, dim_customers[customer_id])
     )
 RETURN
     CustomerRevenue - CustomerCOGS
@@ -788,3 +788,4 @@ Pour améliorer les performances:
 - Variance %: +/- 5-10% (normal), > 10% (investigate)
 - DSO: ~30-45 days
 - Collection Rate: ~95%
+
