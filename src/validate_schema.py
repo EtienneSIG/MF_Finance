@@ -45,7 +45,7 @@ class SchemaValidator:
         print("--- Validation Finance Tables ---")
         
         # actuals (CRITIQUE pour P&L)
-        actuals = self.load_csv('finance/actuals.csv')
+        actuals = self.load_csv('finance/fact_actuals.csv')
         if actuals is not None:
             self.check_columns(actuals, 'actuals', [
                 'transaction_id', 'account_id', 'cost_center_id', 'period_date',
@@ -61,7 +61,7 @@ class SchemaValidator:
                     )
         
         # budget (CRITIQUE pour Variance Analysis)
-        budget = self.load_csv('finance/budget.csv')
+        budget = self.load_csv('finance/fact_budgets.csv')
         if budget is not None:
             self.check_columns(budget, 'budget', [
                 'budget_id', 'account_id', 'cost_center_id', 'period_date',
@@ -69,7 +69,7 @@ class SchemaValidator:
             ])
         
         # invoices (CRITIQUE pour DSO)
-        invoices = self.load_csv('finance/invoices.csv')
+        invoices = self.load_csv('business/fact_invoices.csv')
         if invoices is not None:
             self.check_columns(invoices, 'invoices', [
                 'invoice_id', 'customer_id', 'invoice_date', 'due_date',
@@ -88,7 +88,7 @@ class SchemaValidator:
                     )
         
         # payments
-        payments = self.load_csv('finance/payments.csv')
+        payments = self.load_csv('business/fact_payments.csv')
         if payments is not None:
             self.check_columns(payments, 'payments', [
                 'payment_id', 'invoice_id', 'payment_date', 'amount', 'method'
@@ -101,7 +101,7 @@ class SchemaValidator:
         print("--- Validation Dimension Tables ---")
         
         # accounts (Chart of Accounts)
-        accounts = self.load_csv('finance/accounts.csv')
+        accounts = self.load_csv('finance/dim_chart_of_accounts.csv')
         if accounts is not None:
             self.check_columns(accounts, 'accounts', [
                 'account_id', 'account_name', 'account_type', 'category'
@@ -113,14 +113,14 @@ class SchemaValidator:
                 print(f"  ℹ️  Account types: {list(account_types)}")
         
         # cost_centers
-        cost_centers = self.load_csv('finance/cost_centers.csv')
+        cost_centers = self.load_csv('finance/dim_cost_centers.csv')
         if cost_centers is not None:
             self.check_columns(cost_centers, 'cost_centers', [
                 'cost_center_id', 'cost_center_name', 'department', 'manager'
             ])
         
         # customers
-        customers = self.load_csv('finance/customers.csv')
+        customers = self.load_csv('business/dim_customers.csv')
         if customers is not None:
             self.check_columns(customers, 'customers', [
                 'customer_id', 'customer_name', 'country', 'segment'
@@ -133,10 +133,10 @@ class SchemaValidator:
         print("--- Validation Relations (Foreign Keys) ---")
         
         # Charger les tables principales
-        actuals = self.load_csv('finance/actuals.csv')
-        budget = self.load_csv('finance/budget.csv')
-        accounts = self.load_csv('finance/accounts.csv')
-        cost_centers = self.load_csv('finance/cost_centers.csv')
+        actuals = self.load_csv('finance/fact_actuals.csv')
+        budget = self.load_csv('finance/fact_budgets.csv')
+        accounts = self.load_csv('finance/dim_chart_of_accounts.csv')
+        cost_centers = self.load_csv('finance/dim_cost_centers.csv')
         
         if actuals is None or accounts is None or cost_centers is None:
             self.errors.append("Impossible de valider les relations: tables manquantes")
